@@ -29,8 +29,6 @@ const urlMap = {
 http.createServer(function (req, res) {
   console.log(req);
 
-  slimbot.sendMessage(chatId, JSON.stringify(req));
-
   let handler = urlMap[req.url];
 
   if (typeof handler === 'function') {
