@@ -1,0 +1,26 @@
+{
+  "name": "telegram-deploy-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/book-crossing/telegram-deploy-bot.git"
+  },
+  "author": "kaskar2008",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/book-crossing/telegram-deploy-bot/issues"
+  },
+  "homepage": "https://github.com/book-crossing/telegram-deploy-bot#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  },
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "slimbot": "^0.8.1"
+  }
+}

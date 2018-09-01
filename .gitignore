@@ -1,0 +1,7 @@
+npm-debug.log
+node_modules
+.idea
+.env
+yarn.lock
+.DS_Store
+thumbs.db
