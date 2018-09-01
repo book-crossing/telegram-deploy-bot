@@ -7,28 +7,18 @@ const chatId = process.env['TELEGRAM_CHAT_ID'];
 const Slimbot = require('slimbot');
 const slimbot = new Slimbot(process.env['TELEGRAM_BOT_TOKEN'] || '');
 
-// Register listeners
-
-// slimbot.on('message', message => {
-//   slimbot.sendMessage(message.chat.id, 'Message received');
-// });
-
-// Call API
-
 slimbot.startPolling();
 
 const urlMap = {
   '/building': () => {
-    slimbot.sendMessage(chatId, 'Building...');
+    slimbot.sendMessage(chatId, '🚧 Building book-crossing backend dev server...');
   },
   '/deployed': () => {
-    slimbot.sendMessage(chatId, 'Deployed...');
+    slimbot.sendMessage(chatId, '✔️ Deployed book-crossing backend dev server!');
   }
 };
 
 http.createServer(function (req, res) {
-  console.log(req);
-
   let handler = urlMap[req.url];
 
   if (typeof handler === 'function') {
