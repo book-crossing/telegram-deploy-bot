@@ -37,4 +37,4 @@ http.createServer(function (req, res) {
     handler();
   }
   res.end('ok');
-}).listen(process.env['HOST'] || 'localhost', process.env['PORT'] || 3030);
+}).listen(process.env['PORT'] || 3030, process.env['HOST'] || 'localhost');
