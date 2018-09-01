@@ -26,7 +26,7 @@ const urlMap = {
   }
 };
 
-http.createServer(function (req, res) {
+http.createServer(process.env['HOST'] || 'localhost', function (req, res) {
   console.log(req);
 
   slimbot.sendMessage(chatId, JSON.stringify(req));
