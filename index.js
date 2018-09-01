@@ -36,5 +36,5 @@ http.createServer(function (req, res) {
   if (typeof handler === 'function') {
     handler();
   }
-  res.end();
+  res.end('ok');
 }).listen(process.env['PORT'] || 3030);
