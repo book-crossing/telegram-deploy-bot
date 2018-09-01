@@ -26,7 +26,7 @@ const urlMap = {
   }
 };
 
-http.createServer(process.env['HOST'] || 'localhost', function (req, res) {
+http.createServer(function (req, res) {
   console.log(req);
 
   slimbot.sendMessage(chatId, JSON.stringify(req));
@@ -37,4 +37,4 @@ http.createServer(process.env['HOST'] || 'localhost', function (req, res) {
     handler();
   }
   res.end('ok');
-}).listen(process.env['PORT'] || 3030);
+}).listen(process.env['HOST'] || 'localhost', process.env['PORT'] || 3030);
