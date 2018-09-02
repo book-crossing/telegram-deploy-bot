@@ -1,80 +1,59 @@
 require('dotenv').config();
 
-const http = require('http');
-const { parse } = require('querystring');
+const express = require("express");
+const myParser = require("body-parser");
 
 const chatId = process.env['TELEGRAM_CHAT_ID'];
 
 const Slimbot = require('slimbot');
 const slimbot = new Slimbot(process.env['TELEGRAM_BOT_TOKEN'] || '');
 
-// try {
-//   slimbot.startPolling();
-// } catch (e) {
-//   console.error(e);
-// }
+try {
+  slimbot.startPolling();
+} catch (e) {
+  console.error(e);
+}
 
 const resourceHandler = {
   'build': (body) => {
     let appName = body.data.app.name || 'unknown app';
+    let author = body.actor.email || 'unknown author';
+    let version = body.data.release.version || 'unknown';
     let text = `
-      App: <b>${appName}</b>\r\n
-      Status: 🚧 <b>Building</b>\r\n
-      Branch: <b>dev</b>
+App: *${appName}* (version ${version})
+Status: 🚧 *Building*
+Branch: *dev*
+Author: [${author}](mailto:${author})
     `;
-    slimbot.sendMessage(chatId, text, 'HTML');
+    slimbot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
   },
   'release': (body) => {
     let appName = body.data.app.name || 'unknown app';
+    let author = body.actor.email || 'unknown author';
+    let version = body.data.release.version || 'unknown';
     let text = `
-      App: <b>${appName}</b>\r\n
-      Status: ✔️ <b>Deployed</b>\r\n
-      Branch: <b>dev</b>
+App: *${appName}* (version ${version})
+Status: ✔️ *Deployed*
+Branch: *dev*
+Author: [${author}](mailto:${author})
     `;
-    slimbot.sendMessage(chatId, text, 'HTML');
+    slimbot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
   }
 };
 
-function parseBody(req) {
-  if (req.method === 'POST') {
-    let body = '';
-    return new Promise((resolve, reject) => {
-      req.on('data', chunk => {
-        body += chunk.toString();
-      });
-      req.on('end', () => {
-        try {
-          req.body = JSON.parse(parse(body));
-          resolve(req);
-        } catch (e) {
-          reject(e);
-        }
-      });
-    })
-  }
-  return req;
-}
 
-http.createServer(async function (req, res) {
-  if (req.method === 'POST') {
-    try {
-      req = await parseBody(req);
-    } catch (e) { }
+const app = express();
+app.use(myParser.json({ extended: true }));
+app.post('/', function (req, res) {
+  let resource = req.body.resource;
+  let handler = resourceHandler[resource];
 
-    console.log('POST body:', req.body);
-
-    let resource = req.body.resource;
-    let handler = resourceHandler[resource];
-
-    if (typeof handler === 'function') {
-      handler(req.body);
-      res.end('ok');
-    } else {
-      res.writeHead(403);
-      res.end();
-    }
+  if (typeof handler === 'function') {
+    handler(req.body);
+    res.end('ok');
   } else {
-    res.writeHead(404);
+    res.writeHead(403);
     res.end();
   }
-}).listen(process.env['PORT'] || 3030, process.env['HOST'] || 'localhost');
+});
+app.listen(process.env['PORT'] || 3030, process.env['HOST'] || 'localhost');
