@@ -13,11 +13,21 @@ slimbot.startPolling();
 const resourceHandler = {
   'build': (body) => {
     let appName = body.data.app.name || 'unknown app';
-    slimbot.sendMessage(chatId, '🚧 Building ${appName} backend dev server...');
+    let text = `
+      App: <b>${appName}</b>\r\n
+      Status: 🚧 <b>Building</b>\r\n
+      Branch: <b>dev</b>
+    `;
+    slimbot.sendMessage(chatId, text, 'HTML');
   },
   'release': (body) => {
     let appName = body.data.app.name || 'unknown app';
-    slimbot.sendMessage(chatId, '✔️ Deployed ${appName} backend dev server!');
+    let text = `
+      App: <b>${appName}</b>\r\n
+      Status: ✔️ <b>Deployed</b>\r\n
+      Branch: <b>dev</b>
+    `;
+    slimbot.sendMessage(chatId, text, 'HTML');
   }
 };
 
