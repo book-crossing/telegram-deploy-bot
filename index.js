@@ -34,19 +34,26 @@ const resourceHandler = {
 function parseBody(req) {
   if (req.method === 'POST') {
     let body = '';
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
-    req.on('end', () => {
-      req.body = parse(body);
-    });
+    return new Promise((resolve, reject) => {
+      req.on('data', chunk => {
+        body += chunk.toString();
+      });
+      req.on('end', () => {
+        try {
+          req.body = parse(body);
+          resolve(req);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    })
   }
   return req;
 }
 
-http.createServer(function (req, res) {
+http.createServer(async function (req, res) {
   if (req.method === 'POST') {
-    req = parseBody(req);
+    req = await parseBody(req);
 
     let resource = req.body.resource;
     let handler = resourceHandler[resource];
