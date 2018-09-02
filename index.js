@@ -53,7 +53,9 @@ function parseBody(req) {
 
 http.createServer(async function (req, res) {
   if (req.method === 'POST') {
-    req = await parseBody(req);
+    try {
+      req = await parseBody(req);
+    } catch (e) { }
 
     let resource = req.body.resource;
     let handler = resourceHandler[resource];
