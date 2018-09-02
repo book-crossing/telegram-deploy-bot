@@ -60,6 +60,6 @@ function handleHook(branch, req, res) {
 
 const app = express();
 app.use(myParser.json({ extended: true }));
-app.post('/dev', handleHook('dev', req, res));
-app.post('/master', handleHook('master', req, res));
+app.post('/dev', (req, res) => handleHook('dev', req, res));
+app.post('/master', (req, res) => handleHook('master', req, res));
 app.listen(process.env['PORT'] || 3030, process.env['HOST'] || 'localhost');
