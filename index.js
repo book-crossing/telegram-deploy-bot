@@ -61,6 +61,8 @@ http.createServer(async function (req, res) {
       req = await parseBody(req);
     } catch (e) { }
 
+    console.log('POST body:', req.body);
+
     let resource = req.body.resource;
     let handler = resourceHandler[resource];
 
