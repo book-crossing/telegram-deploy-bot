@@ -8,7 +8,11 @@ const chatId = process.env['TELEGRAM_CHAT_ID'];
 const Slimbot = require('slimbot');
 const slimbot = new Slimbot(process.env['TELEGRAM_BOT_TOKEN'] || '');
 
-slimbot.startPolling();
+try {
+  slimbot.startPolling();
+} catch (e) {
+  console.error(e);
+}
 
 const resourceHandler = {
   'build': (body) => {
