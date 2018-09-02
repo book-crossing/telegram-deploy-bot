@@ -44,7 +44,7 @@ function parseBody(req) {
       });
       req.on('end', () => {
         try {
-          req.body = parse(body);
+          req.body = JSON.parse(parse(body));
           resolve(req);
         } catch (e) {
           reject(e);
