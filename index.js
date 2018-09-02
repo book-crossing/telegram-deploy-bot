@@ -22,7 +22,7 @@ const resourceHandler = {
       let text = `
 App: *${appName}*
 Status: 🚧 *Building*
-Branch: *dev*
+Branch: *${body.branch}*
 Author: [${author}](mailto:${author})
     `;
       slimbot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
@@ -34,7 +34,7 @@ Author: [${author}](mailto:${author})
       let text = `
 App: *${appName}* (version ${version})
 Status: ✔️ *Deployed*
-Branch: *dev*
+Branch: *${body.branch}*
 Author: [${author}](mailto:${author})
     `;
       slimbot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
@@ -42,10 +42,8 @@ Author: [${author}](mailto:${author})
   }
 };
 
-
-const app = express();
-app.use(myParser.json({ extended: true }));
-app.post('/', function (req, res) {
+function handleHook(branch, req, res) {
+  req.body.branch = branch;
   let resource = req.body.resource;
   let action = req.body.action;
 
@@ -58,5 +56,10 @@ app.post('/', function (req, res) {
     res.writeHead(403);
     res.end();
   }
-});
+}
+
+const app = express();
+app.use(myParser.json({ extended: true }));
+app.post('/dev', handleHook('dev', req, res));
+app.post('/master', handleHook('master', req, res));
 app.listen(process.env['PORT'] || 3030, process.env['HOST'] || 'localhost');
