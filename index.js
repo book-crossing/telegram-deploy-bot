@@ -63,6 +63,9 @@ http.createServer(async function (req, res) {
     if (typeof handler === 'function') {
       handler(req.body);
       res.end('ok');
+    } else {
+      res.writeHead(403);
+      res.end();
     }
   } else {
     res.writeHead(404);
