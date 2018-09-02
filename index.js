@@ -18,7 +18,6 @@ const resourceHandler = {
   'build': (body) => {
     let appName = body.data.app.name || 'unknown app';
     let author = body.actor.email || 'unknown author';
-    let version = body.data.release.version || 'unknown';
     let text = `
 App: *${appName}* (version ${version})
 Status: 🚧 *Building*
@@ -30,7 +29,7 @@ Author: [${author}](mailto:${author})
   'release': (body) => {
     let appName = body.data.app.name || 'unknown app';
     let author = body.actor.email || 'unknown author';
-    let version = body.data.release.version || 'unknown';
+    let version = body.data.version || 'unknown';
     let text = `
 App: *${appName}* (version ${version})
 Status: ✔️ *Deployed*
