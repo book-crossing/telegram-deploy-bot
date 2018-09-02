@@ -19,7 +19,7 @@ const resourceHandler = {
     let appName = body.data.app.name || 'unknown app';
     let author = body.actor.email || 'unknown author';
     let text = `
-App: *${appName}* (version ${version})
+App: *${appName}*
 Status: 🚧 *Building*
 Branch: *dev*
 Author: [${author}](mailto:${author})
